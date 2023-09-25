@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <td>Name</td>
+    <td>Date</td>
+    <td>Value</td>
+    <td>Unit of Measure</td>
+  </tr>
+  <tr *ngIf="(bodyWeight$ | async) as bodyWeight">
+    <td>{{ bodyWeight?.name }}</td>
+    <td>{{ bodyWeight?.date | date }}</td>
+    <td>{{ bodyWeight?.value }}</td>
+    <td>{{ bodyWeight?.unit }}</td>
+  </tr>
+  <tr *ngIf="(bodyHeight$ | async) as bodyHeight">
+    <td>{{ bodyHeight?.name }}</td>
+    <td>{{ bodyHeight?.date | date }}</td>
+    <td>{{ bodyHeight?.value }}</td>
+    <td>{{ bodyHeight?.unit }}</td>
+  </tr>
+</table>

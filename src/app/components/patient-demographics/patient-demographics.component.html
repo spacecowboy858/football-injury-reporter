@@ -1,0 +1,37 @@
+<mat-toolbar>
+  <div class="box-columns">
+    <div class="box">
+      <div class="box-colum left-align">
+        <div> Patient Name: {{ patientDemographics?.firstName }} {{patientDemographics?.lastName}}</div>
+        <div style="font-size: small"></div>
+      </div>
+    </div>
+
+
+    <div class="box">
+
+      <div class="box-colum right-align">
+        <div class="demographic-label">DOB:</div>
+        <div class="demographic-label">Gender:</div>
+      </div>
+      <div class="box-colum left-align">
+        <div class="demographic-info"> {{ patientDemographics?.dob }} </div>
+        <div class="demographic-info">{{ patientDemographics?.gender }}</div>
+      </div>
+
+      <div class="box-colum right-align">
+        <div class="demographic-label"> *Address: </div>
+        <div class="demographic-label">Phone #:</div>
+      </div>
+      <div class="box-colum left-align">
+        <div class="demographic-info">{{ patientDemographics?.address }}</div>
+        <div class="demographic-info">{{ patientDemographics?.phoneNumber }}</div>
+      </div>
+
+
+    </div>
+
+    <div class="box">
+    </div>
+  </div>
+</mat-toolbar>

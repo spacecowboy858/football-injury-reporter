@@ -1,0 +1,17 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.spinner-container {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 40%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}
+
+.form-control{
+  margin-right: 16px; margin-top: 8px; width: 50%
+}

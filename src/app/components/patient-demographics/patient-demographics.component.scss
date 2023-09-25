@@ -1,0 +1,44 @@
+mat-toolbar {
+  font-size: medium;
+  min-height: 100px !important;
+}
+
+.box-columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.box-colum{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.right-align{
+  align-items: flex-end;
+  margin: 0 8px 0 24px;
+}
+
+.left-align{
+  align-items: flex-start;
+  margin: 0 24px 0 8px;
+}
+
+.demographic-label {
+  font-size: small;
+}
+
+.demographic-info{
+  font-size: small;
+  font-weight: normal;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  width: 100%;
+  min-width: 48px;
+  height: 100%;
+  padding: 0 4px;
+  margin: 2px 0;
+  background-color: white;
+}

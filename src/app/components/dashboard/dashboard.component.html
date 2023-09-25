@@ -1,0 +1,47 @@
+<!-- Render some observations for demo purpose -->
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>
+      Observations
+    </mat-card-title>
+    <app-patient-observations [patient]="patient"></app-patient-observations>
+  </mat-card-content>
+</mat-card>
+
+<!-- Render MedicationRequests -->
+<mat-card style="margin-top:24px">
+  <mat-card-content>
+    <mat-card-title>
+      Medication Requests
+    </mat-card-title>
+    <app-med-rq-grid
+      (onUpdateStatus)="onUpdateStatus($event)" [data]="medicationStatements"></app-med-rq-grid>
+  </mat-card-content>
+</mat-card>
+
+
+<!-- Form to order a new MedicationRequest -->
+<mat-card style="margin-top:24px">
+  <mat-card-content>
+    <mat-card-title>
+      Order New Medication
+    </mat-card-title>
+
+    <form [formGroup]="orderMedicationForm" (ngSubmit)="onOrderMedication()">
+      <mat-form-field appearance="outline" class="form-control">
+        <mat-label>Medication Name</mat-label>
+        <input type="text" matInput aria-label="Medication Name" formControlName="medicationName">
+        <mat-error *ngIf="orderMedicationForm.controls['medicationName'].hasError('required')">
+          Medication name is required
+        </mat-error>
+      </mat-form-field>
+      <button type="button" mat-raised-button color=primary (click)="onOrderMedication()">Order Medication</button>
+    </form>
+
+  </mat-card-content>
+</mat-card>
+
+
+<div class="spinner-container" *ngIf="isLoading">
+  <mat-spinner [diameter]="70"></mat-spinner>
+</div>

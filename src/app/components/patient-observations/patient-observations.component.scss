@@ -1,0 +1,17 @@
+td, th {
+  border:1px groove;
+  padding: 8px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px groove;
+}
+
+tbody tr:nth-child(odd) {
+  background: #eee;
+}
+caption {
+  font-size: 0.8rem;
+}

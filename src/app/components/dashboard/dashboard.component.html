@@ -41,6 +41,53 @@
   </mat-card-content>
 </mat-card>
 
+<!-- Form to Capture Football Injury Data -->
+<mat-card style="margin-top:24px">
+  <mat-card-content>
+    <mat-card-title>
+      Football Injury Details
+    </mat-card-title>
+
+    <form [formGroup]="injuryForm" (ngSubmit)="onSubmitInjuryData()">
+      <mat-form-field appearance="outline">
+        <mat-label>Position</mat-label>
+        <mat-select formControlName="position">
+          <mat-option *ngFor="let option of positionOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label>Formation</mat-label>
+        <mat-select formControlName="formation">
+          <mat-option *ngFor="let option of formationOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label>Play Call</mat-label>
+        <mat-select formControlName="playCall">
+          <mat-option *ngFor="let option of playCallOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label>Injury</mat-label>
+        <input matInput formControlName="injury" placeholder="Enter injury (e.g., concussion, ACL tear)">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Injury</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateOfInjury">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <br>
+      <button type="submit" mat-raised-button color="primary">Submit Injury Data</button>
+    </form>
+    <br>
+
+  </mat-card-content>
+</mat-card>
 
 <div class="spinner-container" *ngIf="isLoading">
   <mat-spinner [diameter]="70"></mat-spinner>

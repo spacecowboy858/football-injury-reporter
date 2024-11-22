@@ -25,6 +25,9 @@ import {AuthInterceptor} from "./providers/auth-interceptor";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSelectModule} from "@angular/material/select";
 import { PatientObservationsComponent } from './components/patient-observations/patient-observations.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,12 @@ import { PatientObservationsComponent } from './components/patient-observations/
     MatSortModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

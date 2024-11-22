@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, map } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,22 +20,40 @@ export class StudentCodeService {
 
   exercise_0_testScopes(): string {
     // Add the additional two scopes here.
-    return 'launch profile openid online_access patient/Patient.read';
+    return 'launch profile openid online_access patient/Patient.read patient/Observation.read patient/MedicationRequest.*';
   }
 
   exercise_1_searchMedicationRequests(client): Observable<any> {
-    // STUDENT TODO: Write your code here.
-
-    // The following line is a placeholder so the code compiles. Replace it with a return similar to the example.
-    return of([]); // STUDENT TODO: Remove me.
+    // return from<any[]>(client.patient.request('MedicationRequest', { flat:true})); 
+    let queryParams = new URLSearchParams();
+    queryParams.set('patient', client.patient.id);
+    
+    return from<any[]>(client.request('MedicationRequest?'+queryParams, { flat:true})); 
   }
 
   // http://docs.smarthealthit.org/client-js/client.html
   exercise_2_updateMedicationRequest(client, resource: any, status: string): Observable<any> {
-    return of({}); // STUDENT TODO: Remove me.
+    // Update the status field of the MedicationRequest resource
+    // console.log(resource);
+    resource.status = status;
+    return from<any[]>(client.update(resource));
   }
 
   exercise_3_createMedicationRequest(client, medicationName: string): Observable<any> {
-    return of({}); // STUDENT TODO: Remove me.
+    // console.log(client);
+    const patientId = client.patient.id;
+    const patientReference = `Patient/${patientId}`;
+    const newMedicationRequest = {
+      resourceType: "MedicationRequest",
+      status: "draft",
+      intent: "order",
+      subject: {
+          reference: patientReference 
+      },
+      medicationCodeableConcept: {
+          text: medicationName 
+      }
+    };
+    return from<any[]>(client.create(newMedicationRequest));    
   }
 }

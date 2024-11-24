@@ -28,6 +28,7 @@ import { PatientObservationsComponent } from './components/patient-observations/
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ConditionRqGridComponent } from './components/condition-rq-grid/condition-rq-grid.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     DashboardComponent,
     PatientDemographicsComponent,
     MedRqGridComponent,
-    PatientObservationsComponent
+    PatientObservationsComponent,
+    ConditionRqGridComponent
   ],
   imports: [
     BrowserModule,

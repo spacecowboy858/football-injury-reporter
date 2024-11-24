@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FhirClientService} from "../../services/fhir-client.service";
 import {UtilsService} from "../../services/utils.service";
 import {TableFormatMedRq} from "../../domain/table-format-med-rq";
+import {TableFormatConditionRq} from "../../domain/table-format-condition-rq";
 import {ApiService} from "../../services/api.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { client } from 'fhirclient';
@@ -15,7 +16,9 @@ import { client } from 'fhirclient';
 export class DashboardComponent implements OnInit{
   isLoading: boolean = false;
   medicationStmntResponseBundle: any;
+  conditionStmntResponseBundle: any;
   medicationStatements: TableFormatMedRq[] = [];
+  conditionStatements: TableFormatConditionRq[] = [];
   patient: any;
   orderMedicationForm: FormGroup;
   injuryForm: FormGroup;
@@ -33,10 +36,11 @@ export class DashboardComponent implements OnInit{
 
   ngOnInit(): void {
     this.isLoading = true;
-
     this.apiService.searchMedicationRequestByPatientId().subscribe({
       next: value => {
         this.isLoading = false;
+        console.log('Medication Requests')
+        console.log(value)
         this.medicationStatements = this.toTableFormat(value);
       },    
       error: err => {
@@ -45,15 +49,22 @@ export class DashboardComponent implements OnInit{
         this.utilsService.showErrorNotification("Error loading records. Please check the browser console.")
       }
     });
-
     this.orderMedicationForm = new FormGroup({
       medicationName: new FormControl('', [Validators.required])
     });
     this.apiService.searchConditionsByPatientId().subscribe({
       next: value => {
         this.isLoading = false;
+        console.log('All conditions by patient ID');
         console.log(value);
-        // this.medicationStatements = this.toTableFormat(value);
+        const filteredArray = value.filter(
+          (item) =>
+            item.extension?.[0]?.url ===
+            "https://example.org/fhir/StructureDefinition/football-injury-extension"
+        );
+        console.log('Filtered Conditions');
+        console.log(filteredArray);
+        this.conditionStatements = this.toConditionTableFormat(filteredArray);
       },    
       error: err => {
         this.isLoading = false;
@@ -98,7 +109,6 @@ export class DashboardComponent implements OnInit{
         console.error('Error fetching play call options:', err);
       }
     });
-
   }
   private toTableFormat(medicationRequestList: any): TableFormatMedRq[] | null {
     let tableFormatMedicationStatementList: TableFormatMedRq[] = [];
@@ -106,6 +116,13 @@ export class DashboardComponent implements OnInit{
        tableFormatMedicationStatementList.push(new TableFormatMedRq(resource));
       });
     return tableFormatMedicationStatementList;
+  }
+  private toConditionTableFormat(conditionRequestList: any): TableFormatConditionRq[] | null {
+    let tableFormatConditionStatementList: TableFormatConditionRq[] = [];
+    conditionRequestList.map(resource => {
+      tableFormatConditionStatementList.push(new TableFormatConditionRq(resource));
+      });
+    return tableFormatConditionStatementList;
   }
 
   onUpdateStatus($event: { status: string; resource: any }) {

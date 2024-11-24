@@ -64,11 +64,11 @@ export class ApiService {
   }
 
   searchConditionsByPatientId(): Observable<any> {
-    return this.fhirClient$.pipe(
-      skipWhile((client) => !client),
+    return this.fhirClient$.pipe(skipWhile((client) => !client),
       switchMap(client => {
         // Create query parameters
         let queryParams = new URLSearchParams();
+        console.log('client.patient.id: ' + client.patient.id);
         queryParams.set('patient', client.patient.id);  // Use the patient ID to search for conditions
   
         // Make the request to fetch conditions
@@ -77,50 +77,74 @@ export class ApiService {
     );
   }
 
-  submitInjuryData(injuryData: any): Observable<any> {
-    return this.fhirClient$.pipe(
-      skipWhile((client) => !client),
+  submitInjuryData(injuryData: any):  Observable<any> {
+    return this.fhirClient$.pipe(skipWhile((client) => !client)).pipe(
       switchMap(client => {
-        // Construct the FHIR Condition resource with the football injury extension
-        const conditionResource = {
+        // console.log(injuryData);
+        const patientId = client.patient.id;
+        const patientReference = `Patient/${patientId}`;
+        const newConditionRequest = {
           resourceType: "Condition",
+          clinicalStatus: {
+            coding: [
+              {
+                system: "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                code: "active"
+              }
+            ]
+          },
+          verificationStatus: {
+            coding: [
+              {
+                system: "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                code: "confirmed"
+              }
+            ]
+          },
+          code: {
+            coding: [
+              {
+                system: "http://snomed.info/sct",
+                code: "unknown", // Placeholder if you don't have specific codes
+                display: injuryData.injury || "Football injury"
+              }
+            ],
+            text: injuryData.injury || "Football injury"
+          },
+          subject: {
+            reference: patientReference // Assuming patientReference is defined elsewhere
+          },
+          encounter: {
+            reference: "Encounter/placeholder" // Replace with a real encounter reference if available
+          },
+          onsetDateTime: injuryData.dateOfInjury || new Date().toISOString(),
+          recordedDate: new Date().toISOString(),
           extension: [
             {
-              url: "https://github.gatech.edu/pnguyen45/football-fhir-extensions/football-injury-extension",
+              url: "https://example.org/fhir/StructureDefinition/football-injury-extension",
               extension: [
                 {
                   url: "position",
-                  valueCodeableConcept: {
-                    text: injuryData.position  // Added text field for position
-                  }
+                  valueString: injuryData.position || "unknown"
                 },
                 {
                   url: "formation",
-                  valueCodeableConcept: {
-                    text: injuryData.formation  // Added text field for formation
-                  }
+                  valueString: injuryData.formation || "unknown"
                 },
                 {
                   url: "playCall",
-                  valueCodeableConcept: {
-                    text: injuryData.playCall  // Added text field for playCall
-                  }
-                },
-                {
-                  url: "injury",  // New extension for injury
-                  valueString: injuryData.injury  // Directly use the injury string
+                  valueString: injuryData.playCall || "unknown"
                 }
               ]
             }
           ]
         };
-  
-        // Submit the Condition resource to the FHIR server
-        return client.create({ resourceType: "Condition", body: conditionResource });
+        
+        return from<any[]>(client.create(newConditionRequest));  
       })
     );
   }
-  
+
   getPositionOptions(): Observable<string[]> {
     const apiUrl = 'https://api.github.com/repos/spacecowboy858/football-fhir-extensions/contents/position-codes.json?ref=main';
   

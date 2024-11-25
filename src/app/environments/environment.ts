@@ -5,5 +5,6 @@ export const environment = {
   // clientId: "210df7b6-2852-4a15-9e40-b58939096628",
   clientId: "fake_client_id",
   fhirScope: 'launch profile openid online_access patient/Patient.read' , // Smart on FHIR Scopes
-  redirectUri: 'http://localhost:4200/'
+  redirectUri: 'http://localhost:4200',
+  iss: 'https://launch.smarthealthit.org/v/r4/fhir',
 };
